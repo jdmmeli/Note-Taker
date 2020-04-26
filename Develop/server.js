@@ -14,24 +14,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "Develop/public")));
 
-// reads the notes
+// reads the notes from db
 app.get("/api/notes", function(err, res) {
   try {
    
     notesData = fs.readFileSync("Develop/db/db.json", "utf8");
-    console.log("hello!");
+    console.log("success");
    
     notesData = JSON.parse(notesData);
 
    
   } catch (err) {
-    console.log("\n error (in app.get.catch):");
     console.log(err);
   }
   res.json(notesData);
 });
 
-
+// writes the notes to db
 app.post("/api/notes", function(req, res) {
   try {
     
@@ -56,7 +55,7 @@ app.post("/api/notes", function(req, res) {
 });
 
 
-
+// deletes the notes from db
 app.delete("/api/notes/:id", function(req, res) {
   try {
     notesData = fs.readFileSync("./Develop/db/db.json", "utf8");
@@ -81,21 +80,21 @@ app.delete("/api/notes/:id", function(req, res) {
 
 
 
-
+// sends to notes.html
 app.get("/notes", function(req, res) {
-  res.sendFile(path.join(__dirname, "Develop/public/notes.html"));
+  res.sendFile(path.join(__dirname, "../Develop/public/notes.html"));
 });
 
-
+// sends to index.html
 app.get("*", function(req, res) {
-  res.sendFile(path.join(__dirname, "Develop/public/index.html"));
+  res.sendFile(path.join(__dirname, "../Develop/public/index.html"));
 });
-
+// sends to db
 app.get("/api/notes", function(req, res) {
   return res.sendFile(path.json(__dirname, "Develop/db/db.json"));
 });
 
-
+// starts server
 app.listen(PORT, function() {
   console.log("SERVER IS LISTENING: " + PORT);
 });
